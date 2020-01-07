@@ -1,6 +1,10 @@
-package main
+package fuel_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/robthornton/advent2019/fuel"
+)
 
 func TestFuelForMass(t *testing.T) {
 	fuelValues := []struct {
@@ -14,7 +18,7 @@ func TestFuelForMass(t *testing.T) {
 	}
 
 	for _, fv := range fuelValues {
-		got := fuelForMass(fv.mass)
+		got := fuel.ForMass(fv.mass)
 
 		if got != fv.expected {
 			t.Logf("expected %d, got %d", fv.expected, got)
@@ -35,7 +39,7 @@ func TestFuelForFuel(t *testing.T) {
 	}
 
 	for _, fv := range fuelValues {
-		got := fuelForFuel(fv.fuel)
+		got := fuel.ForFuel(fv.fuel)
 
 		if got != fv.expected {
 			t.Logf("expected %d, got %d", fv.expected, got)
@@ -55,7 +59,7 @@ func TestTotalFuelForModule(t *testing.T) {
 	}
 
 	for _, fv := range fuelValues {
-		got := totalFuelForModule(fv.mass)
+		got := fuel.TotalForModule(fv.mass)
 
 		if got != fv.expected {
 			t.Logf("expected %d, got %d", fv.expected, got)

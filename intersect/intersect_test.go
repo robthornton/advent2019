@@ -1,59 +1,63 @@
-package main
+package intersect_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/robthornton/advent2019/intersect"
+)
 
 func TestLineSegmentIntersects(t *testing.T) {
 	tests := []struct {
-		a, b       Line
+		a, b       intersect.Line
 		intersects bool
 		dist       int
 	}{
 		// match
 		{
-			a:          Line{x1: 0, y1: 1, x2: 2, y2: 1},
-			b:          Line{x1: 1, y1: 0, x2: 1, y2: 2},
+			a:          intersect.NewLine(0, 2, 1, 1),
+			b:          intersect.NewLine(1, 1, 0, 2),
 			intersects: true,
 			dist:       2,
 		},
 		// right
 		{
-			a:          Line{x1: 0, y1: 1, x2: 2, y2: 1},
-			b:          Line{x1: 3, y1: 0, x2: 3, y2: 2},
+			a:          intersect.NewLine(0, 1, 2, 1),
+			b:          intersect.NewLine(3, 0, 3, 2),
 			intersects: false,
 			dist:       0,
 		},
 		// left
 		{
-			a:          Line{x1: 1, y1: 1, x2: 3, y2: 1},
-			b:          Line{x1: 0, y1: 0, x2: 0, y2: 2},
+			a:          intersect.NewLine(1, 1, 3, 1),
+			b:          intersect.NewLine(0, 0, 0, 2),
 			intersects: false,
 			dist:       0,
 		},
 		// above
 		{
-			a:          Line{x1: 0, y1: 3, x2: 2, y2: 3},
-			b:          Line{x1: 1, y1: 0, x2: 1, y2: 2},
+			a:          intersect.NewLine(0, 3, 2, 3),
+			b:          intersect.NewLine(1, 0, 1, 2),
 			intersects: false,
 			dist:       0,
 		},
 		// below
 		{
-			a:          Line{x1: 0, y1: 1, x2: 2, y2: 1},
-			b:          Line{x1: 1, y1: 3, x2: 1, y2: 5},
+			a:          intersect.NewLine(0, 1, 2, 1),
+			b:          intersect.NewLine(1, 3, 1, 5),
 			intersects: false,
 			dist:       0,
 		},
 		// parallel horizontal
 		{
-			a:          Line{x1: 0, y1: 0, x2: 2, y2: 0},
-			b:          Line{x1: 0, y1: 1, x2: 2, y2: 1},
+			a:          intersect.NewLine(0, 0, 2, 0),
+			b:          intersect.NewLine(0, 1, 2, 1),
 			intersects: false,
 			dist:       0,
 		},
 		// parallel vertical
 		{
-			a:          Line{x1: 0, y1: 0, x2: 0, y2: 2},
-			b:          Line{x1: 1, y1: 0, x2: 1, y2: 2},
+			a:          intersect.NewLine(0, 0, 0, 2),
+			b:          intersect.NewLine(1, 0, 1, 2),
 			intersects: false,
 			dist:       0,
 		},
@@ -65,7 +69,7 @@ func TestLineSegmentIntersects(t *testing.T) {
 			t.Errorf("(%d) expected match to be %v but got %v", i, test.intersects, ok)
 		}
 
-		if dist.x+dist.y != test.dist {
+		if dist.X()+dist.Y() != test.dist {
 			t.Errorf("(%d) expected match to be %d but got %d", i, test.dist, dist)
 		}
 	}
@@ -87,8 +91,8 @@ func TestNearestWireIntersect(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		wireA := NewWireFromPath(test.paths[0])
-		wireB := NewWireFromPath(test.paths[1])
+		wireA := intersect.NewWireFromPath(test.paths[0])
+		wireB := intersect.NewWireFromPath(test.paths[1])
 		dist, ok := wireA.ClosestIntersectionToOrigin(wireB)
 
 		if !ok {
@@ -117,8 +121,8 @@ func TestShortestDistanceIntersect(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		wireA := NewWireFromPath(test.paths[0])
-		wireB := NewWireFromPath(test.paths[1])
+		wireA := intersect.NewWireFromPath(test.paths[0])
+		wireB := intersect.NewWireFromPath(test.paths[1])
 		dist := wireA.ShortestIntersect(wireB)
 
 		if dist != test.expected {

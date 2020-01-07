@@ -1,4 +1,4 @@
-package main
+package modules
 
 import (
 	"bytes"
@@ -8,7 +8,8 @@ import (
 	"strings"
 )
 
-func modulesFromReader(r io.Reader) ([]int64, error) {
+// FromReader creates a set of module masses.
+func FromReader(r io.Reader) ([]int64, error) {
 	modules := make([]int64, 0)
 
 	buf, err := ioutil.ReadAll(r)

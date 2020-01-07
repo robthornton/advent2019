@@ -1,10 +1,12 @@
-package main
+package modules_test
 
 import (
 	"errors"
 	"io"
 	"strings"
 	"testing"
+
+	"github.com/robthornton/advent2019/modules"
 )
 
 type mockReader []string
@@ -22,7 +24,7 @@ func (b badReader) Read(buf []byte) (n int, err error) {
 
 func TestModuleMassFromBadReader(t *testing.T) {
 	br := badReader{}
-	modules, err := modulesFromReader(br)
+	modules, err := modules.FromReader(br)
 
 	if err == nil {
 		t.Fatal("expected non-nil error")
@@ -36,7 +38,7 @@ func TestModuleMassFromBadReader(t *testing.T) {
 func TestModuleMassesFromReader(t *testing.T) {
 	mr := mockReader{"1", "2", "3", "4"}
 
-	modules, err := modulesFromReader(mr)
+	modules, err := modules.FromReader(mr)
 
 	if err != nil {
 		t.Fatal("unexpected error: ", err)
@@ -50,7 +52,7 @@ func TestModuleMassesFromReader(t *testing.T) {
 func TestModuleMassesFromReaderWithBadInput(t *testing.T) {
 	mr := mockReader{"a"}
 
-	modules, err := modulesFromReader(mr)
+	modules, err := modules.FromReader(mr)
 
 	if err == nil {
 		t.Fatal("expected non-nil error")
@@ -64,7 +66,7 @@ func TestModuleMassesFromReaderWithBadInput(t *testing.T) {
 func TestModuleMassesFromReaderWithEndingNewline(t *testing.T) {
 	mr := mockReader{"42\n"}
 
-	modules, err := modulesFromReader(mr)
+	modules, err := modules.FromReader(mr)
 
 	if err != nil {
 		t.Fatal("unexpected error: ", err)
